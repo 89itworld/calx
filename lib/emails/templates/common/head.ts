@@ -8,10 +8,13 @@ export const emailHead = (headerContent: string): string => {
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style type="text/css">
+      @font-face {
+        font-family: "Cal Sans";
+        src: url('https://cal.com/cal.ttf') format('truetype');
+      }
       #outlook a {
         padding: 0;
       }
-
       body {
         margin: 0;
         padding: 0;
@@ -60,7 +63,7 @@ export const emailHead = (headerContent: string): string => {
     <style type="text/css">
       @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700);
     </style>
-    <!--<![endif]-->
+    <!--<![endif]-->          
     <style type="text/css">
       @media only screen and (min-width:480px) {
         .mj-column-per-100 {
