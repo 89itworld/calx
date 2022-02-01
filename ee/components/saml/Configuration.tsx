@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 
 import { useLocale } from "@lib/hooks/useLocale";
 import showToast from "@lib/notification";
+import { collectPageParameters, telemetryEventTypes, useTelemetry } from "@lib/telemetry";
 import { trpc } from "@lib/trpc";
 
 import { Dialog, DialogTrigger } from "@components/Dialog";
@@ -21,6 +22,8 @@ export default function SAMLConfiguration({
   const [samlConfig, setSAMLConfig] = useState<string | null>(null);
 
   const query = trpc.useQuery(["viewer.showSAMLView", { teamsView, teamId }]);
+
+  const telemetry = useTelemetry();
 
   useEffect(() => {
     const data = query.data;
@@ -66,8 +69,11 @@ export default function SAMLConfiguration({
 
     const rawMetadata = samlConfigRef.current.value;
 
+    // track Google logins. Without personal data/payload
+    telemetry.withJitsu((jitsu) => jitsu.track(telemetryEventTypes.samlConfig, collectPageParameters()));
+
     mutation.mutate({
-      rawMetadata: rawMetadata,
+      encodedRawMetadata: Buffer.from(rawMetadata).toString("base64"),
       teamId,
     });
   }
